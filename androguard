@@ -1,0 +1,130 @@
+Ubuntu下Androguard的环境搭建
+
+一、安装python（这里以Python 2.7.3 为例）
+
+编译前在/usr/local新建一个文件夹，作为Python安装路径，以免覆盖老的版本
+
+sudo mkdir /usr/local/python2.7.3
+下载python的镜像包
+
+wget http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tgz
+解压：
+
+tar -zxvf Python-2.7.3.tgz 
+cd Python-2.7.3
+在解压后的目录下编译安装：
+
+./configure --prefix=/usr/local/python2.7.3
+make
+sudo make install
+（这里可能报错，可能是因为没有安装gcc-c++，sudo yum -y install gcc-c++）
+
+将原来/usr/bin/python的链接改为别的名字：
+
+sudo mv /usr/bin/python /usr/bin/python_old
+建立新版本python的链接：
+
+sudo ln -s /usr/local/python2.7.3/bin/python2.7 /usr/bin/python
+测试安装成功
+
+
+
+二、安装相关模块
+
+2.1 安装pip
+
+wget https://bootstrap.pypa.io/get-pip.py
+sudo python get-pip.py
+sudo ln -sf /usr/local/python2.7.3/bin/pip /usr/bin/pip
+sudo ln -sf /usr/local/python2.7.3/bin/easy_install /usr/bin/easy_install
+2.2 安装IPython
+
+sudo pip install ipython
+sudo ln -s /usr/local/python2.7.3/bin/ipython /usr/bin/ipython
+2.3 安装扩展模块
+
+apt-get install python2.7-dev python-bzutils libbz2-dev libmuparser-dev libsparsehash-dev 
+apt-get install python-ptrace python-pygments graphviz liblzma-dev libsnappy-dev
+apt-get install python python-pyqt5 python-pyperclip python-networkx ipython python-future python-pyasn1 
+apt-get install python-cryptography python-magic python-pydot
+Windows下Androguard的环境搭建
+
+1. Windows 下安装 setuptools 步骤
+
+步骤1：打开网页链接 https://pypi.python.org/pypi/setuptools/0.9.8#windows 
+步骤2：下载ez_setup.py，然后在cmd命令行中，运行：
+
+python ez_setup.py
+步骤3： 安装完成后，找到安装目录，我的在Python2.7的安装目录下，即C:\Python27\Scripts，添加到Path环境变量。在cmd下运行easy_install –help 出现帮助信息则安装成功
+
+步骤4：接下来你就可以采用easy_install安装自己想要的工具包了，比如在cmd窗口执行easy_install pyparsing
+
+2. 安装依赖库
+
+2.1 安装ipython
+
+easy_install ipython
+
+报错信息：
+error: Setup script exited with error: Microsoft Visual C++ 9.0 is required (Unable to find vcvarsall.bat). 
+Get it from http://aka.ms/vcpython27
+解决办法：安装 Microsoft Visual C++ Compiler for Python 2.7 
+下载地址： 
+https://www.microsoft.com/en-us/download/details.aspx?id=44266 
+安装成功显示：
+
+D:\Python27\Scripts>ipython -V
+5.3.0
+2.2 安装pygments，pydot, python-ptrace, chilkat, python-magic, pyfuzzy, mercury，pyperclip，sphinxcontrib-programoutput，future，pydot
+
+问题一：
+
+安装chilkat的时候报错
+D:\Python27\Scripts>easy_install chilkat
+Searching for chilkat
+Reading https://pypi.python.org/simple/chilkat/
+Couldn't find index page for 'chilkat' (maybe misspelled?)
+Scanning index of all packages (this may take a while)
+Reading https://pypi.python.org/simple/
+No local packages or download links found for chilkat
+error: Could not find suitable distribution for Requirement.parse('chilkat')
+解决办法：手动下载chilkat
+
+下载网址：https://www.chilkatsoft.com/python.asp
+
+安装：
+
+python installChilkat.py
+问题二：
+
+D:\Python27\Scripts>easy_install pyfuzzy
+Searching for pyfuzzy
+Reading https://pypi.python.org/simple/pyfuzzy/
+No local packages or download links found for pyfuzzy
+error: Could not find suitable distribution for Requirement.parse('pyfuzzy')
+解决办法：手动下载pyfuzzy
+
+下载网址：http://pyfuzzy.sourceforge.net/
+
+安装：
+
+python setup.py install
+问题三：
+
+D:\Python27\Scripts>easy_install mercury
+Searching for mercury
+Reading https://pypi.python.org/simple/mercury/
+No local packages or download links found for mercury
+error: Could not find suitable distribution for Requirement.parse('mercury')
+解决办法：手动下载mercury，先安装openssl.exe
+
+openssl下载网址：https://pypi.python.org/pypi/pyOpenSSL/0.13
+
+mercury下载网址：http://download.csdn.net/detail/oatnehc/5481921
+
+安装：
+
+python setup.py install
+2. 安装Androguard
+
+下载源码：https://github.com/androguard/androguard
