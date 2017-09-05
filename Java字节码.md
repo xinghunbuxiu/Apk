@@ -6,12 +6,14 @@ Java号称是一门“一次编译到处运行”的语言，但是我们对这�
 
 ![](img/javasrc.png)
 
+javasrc.png
 上面是我们写的一个java程序，很简单，只有一个成员变量a以及一个方法testMethod() 。
 
 2 接下来我们用javac命令或者ide工具将该java源文件编译成java字节码文件。
 
 ![](img/demo.jpg)
 
+demo.jpg
 上图是编译好的字节码文件，我们可以看到一堆16进制的字节。如果你使用IDE去打开，也许看到的是已经被反编译的我们所熟悉的java代码，而这才是纯正的字节码，这也是我们今天需要讲的内容重点。
 
 也许你会对这样一堆字节码感到头疼，不过没关系，我们慢慢试着你看懂它，或许有不一样的收获。在开始之前我们先来看一张图
@@ -25,9 +27,9 @@ Java号称是一门“一次编译到处运行”的语言，但是我们对这�
 从上面的总览图中我们知道前4个字节表示的是魔数，对应我们Demo的是 0XCAFE BABE。什么是魔数？魔数是用来区分文件类型的一种标志，一般都是用文件的前几个字节来表示。比如0XCAFE BABE表示的是class文件，那么有人会问，文件类型可以通过文件名后缀来判断啊？是的，但是文件名是可以修改的（包括后缀），那么为了保证文件的安全性，将文件类型写在文件内部来保证不被篡改。
 从java的字节码文件类型我们看到，CAFE BABE翻译过来是咖啡宝贝之意，然后再看看java图标。
 
-![java_icon](img//java_icon.jpg)
+![](img/java_icon.png)
 
-java_icon.jpg
+java_icon.png
 
 CAFE BABE = 咖啡。
 
@@ -133,7 +135,7 @@ Constant #20
 
 访问标志信息包括该Class文件是类还是接口，是否被定义成public，是否是abstract，如果是类，是否被声明成final。通过上面的源代码，我们知道该文件是类并且是public。
 
-![access_flag](img//access_flag.png)
+![](img/access_flag.png)
 
 0x 00 21：是0×0020和0×0001的并集。其中0×0020这个标志值涉及到了字节码指令，后期会有专题对字节码指令进行讲解。期待中……
 
@@ -156,8 +158,9 @@ Constant #20
 同样，接下来就是2+n个字段属性。我们只有一个属性a，按道理应该是0001。查找文件果不其然是0001。
 那么接下来我们要针对这样的字段进行解析。附上字段表结构图
 
-![字段表结构](img//字段表结构.png)
-字段表结构.png
+![](img/字段表结构.jpg)
+
+字段表结构.jpg
 
 0×00 02 ：访问标志为private（自行搜索字段访问标志）
 0×00 05 : 字段名称索引为#5，对应的是”a”
@@ -191,7 +194,7 @@ tips:一些不太重要的表（字段，方法访问标志表）可以自行搜
 0×000 00038：属性长度为56字节。
 那么接下来解析一个Code属性表，按照下图解析
 
-![code](img//code.jpg)
+![](img/code.jpg)
 
 code.jpg
 
@@ -222,7 +225,7 @@ b1=return 从当前方法返回void
 0×00 02 : attributes_count=2(Code属性表内部还含有2个属性表)
 0×00 0a: 第一个属性表是”LineNumberTable”
 
-![LineNumberTable](img//LineNumberTable.jpg)
+![](img//LineNumberTable.jpg)
 
 LineNumberTable.jpg
 
@@ -294,7 +297,7 @@ SourceFile属性用来记录生成该Class文件的源码文件名称。
 
 
 
-![](img/source_file.jpeg)
+![](img/SourceFile属性结构.jpeg)
 
 source_file.jpeg
 
