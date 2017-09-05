@@ -18,7 +18,7 @@ demo.jpg
 
 也许你会对这样一堆字节码感到头疼，不过没关系，我们慢慢试着你看懂它，或许有不一样的收获。在开始之前我们先来看一张图
 
-![java_byte](img//java_byte.jpeg)
+![](img//java_byte.jpeg)
 
 这张图是一张java字节码的总览图，我们也就是按照上面的顺序来对字节码进行解读的。一共含有10部分，包含魔数，版本号，常量池等等，接下来我们按照顺序一步一步解读。
 
@@ -231,7 +231,7 @@ b1=return 从当前方法返回void
 0×00 02 : attributes_count=2(Code属性表内部还含有2个属性表)
 0×00 0a: 第一个属性表是”LineNumberTable”
 
-![](img//LineNumberTable.jpg)
+![](img//lineNumber.jpg)
 
 LineNumberTable.jpg
 
