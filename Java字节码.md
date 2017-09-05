@@ -3,22 +3,20 @@
 Java号称是一门“一次编译到处运行”的语言，但是我们对这句话的理解深度又有多少呢？从我们写的java文件到通过编译器编译成java字节码文件（也就是.class文件），这个过程是java编译过程；而我们的java虚拟机执行的就是字节码文件。不论该字节码文件来自何方，由哪种编译器编译，甚至是手写字节码文件，只要符合java虚拟机的规范，那么它就能够执行该字节码文件。那么本文主要讲讲java字节码文件相关知识。接下来我们通过具体的Demo来深入理解：
 
 1 首先我们来写一个java源文件
-![javasrc](img//javasrc.png)
-javasrc.png
+
+![](img/javasrc.png)
 
 上面是我们写的一个java程序，很简单，只有一个成员变量a以及一个方法testMethod() 。
 
 2 接下来我们用javac命令或者ide工具将该java源文件编译成java字节码文件。
 
-![demo](img//demo.png)
-demo.png
+![](img/demo.jpg)
 
 上图是编译好的字节码文件，我们可以看到一堆16进制的字节。如果你使用IDE去打开，也许看到的是已经被反编译的我们所熟悉的java代码，而这才是纯正的字节码，这也是我们今天需要讲的内容重点。
 
 也许你会对这样一堆字节码感到头疼，不过没关系，我们慢慢试着你看懂它，或许有不一样的收获。在开始之前我们先来看一张图
 
 ![java_byte](img//java_byte.jpeg)
-java_byte.jpeg
 
 这张图是一张java字节码的总览图，我们也就是按照上面的顺序来对字节码进行解读的。一共含有10部分，包含魔数，版本号，常量池等等，接下来我们按照顺序一步一步解读。
 
@@ -27,8 +25,10 @@ java_byte.jpeg
 从上面的总览图中我们知道前4个字节表示的是魔数，对应我们Demo的是 0XCAFE BABE。什么是魔数？魔数是用来区分文件类型的一种标志，一般都是用文件的前几个字节来表示。比如0XCAFE BABE表示的是class文件，那么有人会问，文件类型可以通过文件名后缀来判断啊？是的，但是文件名是可以修改的（包括后缀），那么为了保证文件的安全性，将文件类型写在文件内部来保证不被篡改。
 从java的字节码文件类型我们看到，CAFE BABE翻译过来是咖啡宝贝之意，然后再看看java图标。
 
-![java_icon](img//java_icon.jpeg)
-java_icon.png
+![java_icon](img//java_icon.jpg)
+
+java_icon.jpg
+
 CAFE BABE = 咖啡。
 
 3.2 版本号
@@ -133,8 +133,7 @@ Constant #20
 
 访问标志信息包括该Class文件是类还是接口，是否被定义成public，是否是abstract，如果是类，是否被声明成final。通过上面的源代码，我们知道该文件是类并且是public。
 
-![access_flag](img//access_flag.jpeg)
-access_flag.png
+![access_flag](img//access_flag.png)
 
 0x 00 21：是0×0020和0×0001的并集。其中0×0020这个标志值涉及到了字节码指令，后期会有专题对字节码指令进行讲解。期待中……
 
@@ -170,8 +169,7 @@ tips:一些不太重要的表（字段，方法访问标志表）可以自行搜
 
 我们只有一个方法testMethod，按照道理应该前2个字节是0001。通过查找发现是0×00 02。这是什么原因，这代表着有2个方法呢？且继续看……
 
-
-方法表结构.png
+![方法表结构](img//方法表结构.jpg)
 
 上图是一张方法表结构图，按照这个图我们分析下面的字节码：
 
@@ -185,16 +183,17 @@ tips:一些不太重要的表（字段，方法访问标志表）可以自行搜
 一个u2的属性名称索引，一个u2的属性长度加上属性长度的info。
 虚拟机规范预定义的属性有很多，比如Code，LineNumberTable，LocalVariableTable，SourceFile等等，这个网上可以搜索到。
 
-
-属性表结构.png
+![属性表结构](img//属性表结构.jpg)
+属性表结构.jpg
 
 按照上面的表结构解析得到下面信息：
 0×0009:名称索引为#9(“Code”)。
 0×000 00038：属性长度为56字节。
 那么接下来解析一个Code属性表，按照下图解析
 
-![code](img//code.png)
-code.png
+![code](img//code.jpg)
+
+code.jpg
 
 前面6个字节（名称索引2字节+属性长度4字节）已经解析过了，所以接下来就是解析剩下的56-6=50字节即可。
 0×00 02 ：max_stack=2
@@ -223,8 +222,9 @@ b1=return 从当前方法返回void
 0×00 02 : attributes_count=2(Code属性表内部还含有2个属性表)
 0×00 0a: 第一个属性表是”LineNumberTable”
 
-![LineNumberTable](img//LineNumberTable.png)
-LineNumberTable.png
+![LineNumberTable](img//LineNumberTable.jpg)
+
+LineNumberTable.jpg
 
 0×00 0000 0a : “属性长度为10″
 0×00 02 ：line_number_table_length=2
@@ -294,7 +294,8 @@ SourceFile属性用来记录生成该Class文件的源码文件名称。
 
 
 
-![source_file](img//source_file.jpeg)
+![](img/source_file.jpeg)
+
 source_file.jpeg
 
 4 另话
@@ -303,6 +304,6 @@ source_file.jpeg
 javap -verbose Demo //不用带后缀.class
 
 
-![javap_result](img//javap_result.png)
+![](img//javap_result.jpg)
 
-javap_result.png
+javap_result.jpg
