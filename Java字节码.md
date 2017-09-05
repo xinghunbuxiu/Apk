@@ -46,7 +46,8 @@ CAFE BABE = 咖啡。
 
 为什么需要类和接口的全局限定名呢？系统引用类或者接口的时候不是通过内存地址进行操作吗？这里大家仔细想想，java虚拟机在没有将类加载到内存的时候根本都没有分配内存地址，也就不存在对内存的操作，所以java虚拟机首先需要将类加载到虚拟机中，那么这个过程设计对类的定位（需要加载A包下的B类，不能加载到别的包下面的别的类中），所以需要通过全局限定名来判别唯一性。这就是为什么叫做全局，限定的意思，也就是唯一性。
 在进行具体常量池分析之前，我们先来了解一下常量池的项目类型表：
-![![jvm_constant](img//jvm_constant.jpeg)](img//jvm_constant.jpeg)
+![](img//jvm_constant.png)
+
 jvm_constant.png
 上面的表中描述了11中数据类型的结构，其实在jdk1.7之后又增加了3种（CONSTANT_MethodHandle_info,CONSTANT_MethodType_info以及CONSTANT_InvokeDynamic_info)。这样算起来一共是14种。接下来我们按照Demo的字节码进行逐一翻译。
 
@@ -137,6 +138,8 @@ Constant #20
 
 ![](img/access_flag.png)
 
+access_flag.png
+
 0x 00 21：是0×0020和0×0001的并集。其中0×0020这个标志值涉及到了字节码指令，后期会有专题对字节码指令进行讲解。期待中……
 
 3.5 类索引
@@ -172,7 +175,9 @@ tips:一些不太重要的表（字段，方法访问标志表）可以自行搜
 
 我们只有一个方法testMethod，按照道理应该前2个字节是0001。通过查找发现是0×00 02。这是什么原因，这代表着有2个方法呢？且继续看……
 
-![方法表结构](img//方法表结构.jpg)
+![](img//方法表结构.jpg)
+
+方法表结构.jpg
 
 上图是一张方法表结构图，按照这个图我们分析下面的字节码：
 
@@ -186,7 +191,8 @@ tips:一些不太重要的表（字段，方法访问标志表）可以自行搜
 一个u2的属性名称索引，一个u2的属性长度加上属性长度的info。
 虚拟机规范预定义的属性有很多，比如Code，LineNumberTable，LocalVariableTable，SourceFile等等，这个网上可以搜索到。
 
-![属性表结构](img//属性表结构.jpg)
+![](img//属性表结构.jpg)
+
 属性表结构.jpg
 
 按照上面的表结构解析得到下面信息：
@@ -238,9 +244,13 @@ line_number_table是一个数量为line_number_table_length，类型为line_numb
 0×00 04 : end_pc=4
 
 0×00 0b 第二个属性表是：”LocalVariableTable”
-![local_variable_table](img//local_variable_table.jpeg)
+
+![](img/local_variable_table.jpg)
+
 local_variable_table.png
-![dl_variable_infoa](img//local_variable_table.jpeg)
+
+![](img/local_varable_info.jpg)
+
 dl_variable_info.png
 
 0×00 0000 0c：属性长度为12
