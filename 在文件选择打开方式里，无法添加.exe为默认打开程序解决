@@ -1,0 +1,1 @@
+修改注册表，点”开始“->"运行”，输入“regedit”并确定打开注册表，在HKEY_CLASSES_ROOT->Applications下有很多程序，找到我们要找的目标程序比如themebuilder.exe，依次打开shell->open->command，会看到一个程序路径，不出意外的话这个路径应该是错的，右键这条记录，然后点修改，把路径修改正确，然后关闭注册表;
