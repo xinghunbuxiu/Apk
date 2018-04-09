@@ -1,0 +1,37 @@
+GIT SSH免密
+
+1、绑host
+	ip：122.112.13.156
+	域名：g1.p2peye.com
+
+2、在.ssh 目录下生成RSA公私钥
+	
+	1. 在家目录的.ssh目录下执行（没有请创建） ssh-keygen -t rsa -C “dengpengfang@p2peye.com" -b 4096   //请把邮箱换成自己的
+	2. 回车后，为了方便有多个git账号请使用一个有代表的公私钥名称（比如 wdty_rsa）,然后一直回车，直到结束。此时，在.ssh目录下会出现 一个公钥和一个私钥（比如 wdty_rsa,wdty_rsa.pub）
+
+
+3、执行 pbcopy < ~/.ssh/wdty_rsa.pub   //复制内容到粘贴板
+
+4、 粘贴到 http://g1.p2peye.com/profile/keys  SSH密钥区里
+
+5、在 .ssh 目录config文件  （没有此文件，请创建）加入以下内容
+
+	// wdty_dpf 别名，在做git的一些操作时，用此名称
+	// HostName 表示git地址
+	// User 请使用自己姓名的全拼
+	// IdentityFile 私钥地址
+	//  Port Git服务器端口（默认为22，我们公司更改了默认端口）
+
+Host wdty_dpf
+        HostName g1.p2peye.com
+        User dengpengfang
+        IdentityFile ~/.ssh/wdty_rsa
+        Port 32486
+
+
+6、clone一个项目
+	1. 在g1.p2peye.com上的SSH的URL是这样的 git@g1.p2peye.com:ios/licai.git ， 这样是clone不下来的
+	2. 需要更改为 ssh://git@wdty_dpf/ios/licai.git
+		// 增加协议头 ssh://
+		// 把其中的g1.p2peye.com 改为别名，上文中提到的config文件里
+		// 把 （ ：）冒号 改为 （ / ） 斜杠
