@@ -1,0 +1,46 @@
+mkdir <repo>
+cd <repo>
+git init
+git remote add -f origin <url> 
+（git remote add -f origin https://github.com/thiagooo0/lmnplayer.git）
+
+
+git config core.sparseCheckout true  //允许检出 子目录
+
+echo "some/dir/" >> .git/info/sparse-checkout
+echo "another/sub/tree" 
+
+git pull origin master
+
+
+
+//获取 项目目录及信息
+D:\android\lmnplayer (master -> origin)
+λ  git remote add -f origin https://github.com/thiagooo0/lmnplayer.git
+Updating origin
+remote: Enumerating objects: 2217, done.
+Rremote: Total 2217 (delta 0), reused 0 (delta 0), pack-reused 2217eceiving objects:  96% (2129/2217), 112.18 MiB | 566.00 KiB/s
+Receiving objects: 100% (2217/2217), 112.30 MiB | 559.00 KiB/s, done.
+Resolving deltas: 100% (970/970), done.
+From https://github.com/thiagooo0/lmnplayer
+ * [new branch]      master     -> origin/master
+ * [new tag]         v1.0.0     -> v1.0.0
+ * [new tag]         v1.0.1     -> v1.0.1
+ * [new tag]         v1.0.2     -> v1.0.2
+ * [new tag]         v1.0.3     -> v1.0.3
+
+ //允许 下载子目录
+D:\android\lmnplayer (master -> origin)
+λ git config core.sparsecheckout true
+
+// 写入要下在的文件及目录
+D:\android\lmnplayer (master -> origin)
+λ echo ijkplayer-java >> .git/info/sparse-checkout:
+
+D:\android\lmnplayer (master -> origin)
+λ ls
+
+D:\android\lmnplayer (master -> origin)
+λ git pull origin master
+From https://github.com/thiagooo0/lmnplayer
+ * branch            master     -> FETCH_HEAD
