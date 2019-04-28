@@ -1,0 +1,89 @@
+.odex 转 .dex
+
+dex是安卓dalvik虚拟机的可执行文件，可以在导出的apk文件里用解压缩软件直接打开。
+odex是经过优化过的dex。odex一种是从apk程序中提取出来的，与apk文件存放在同一目录，
+文件后缀为odex，这类odex文件多是Android ROM的系统程序；另一种缓存文件
+，这类odex仍以dex为后缀，存放在cache/dalvik-cache目录下。存放文件名格式为“apk路径@apk名@class.dex”，
+例如“system@app@Calculator@class.dex”，表示/system/app目录下的Calculator.apk程序的odex文件。
+
+
+https://github.com/testwhat/SmaliEx/releases
+
+1. 下载 smali 和 baksmali，
+2. 下载 oat2dex
+
+
+mkdir system 
+
+cd system
+
+
+adb pull system/framwork
+
+adb pull system/app/需要的apk 目录 
+
+第一种 方式
+
+1
+网上查了查 好多都是
+
+java -jar baksmali.jar x CertInstaller.odex -d /framework
+
+java -jar smali.jar out -o OutHelloDex.dex 
+ 
+org.jf.dexlib2.DexFileFactory$UnsupportedOatVersionException: Unsupported oat version: 45
+
+
+
+以下方式解决()
+
+3. 从 system/framwork/arm 目录里拿到 boot.oat 随便一个 CertInstaller.odex(我用的是这个)
+4. 执行 java -jar oat2dex.jar boot boot.oat; 这会在 boot.oat 所在目录下生成 boot.oat-dex dex 两个子目录
+5. 执行 java -jar oat2dex.jar app\CertInstaller\arm64\CertInstaller.odex; 会生成 一个字目录 CertInstaller.odex-dex dex文件在此目录下 CertInstaller.dex
+
+
+、dex转换为odex
+使用dexopt-wrapper可以将dex转换为odex。dexopt-wrapper在安卓2.3以前的源码中可以找到。将dex-wrapper编译后放到手机中。
+
+adb push dexopt-wrapper /data/local
+adb shell chmod 777 /data/local/dexopt-wrapper
+ 
+
+随意从apk文件中提取一个dex文件，将其改名为classex.dex，zip将其压缩后改名为HelloDex.zip
+
+adb push HelloDex.zip /data/local
+adb shell
+cd /data/local
+./dexopt-wrapper HelloDex.zip HelloDex.odex
+如果执行无错误会有如下输出
+
+./dexopt-wrapper HelloDex.zip HelloDex.odex
+--- BEGIN 'HelloDex.zip' (bootstrap=0) ---
+--- waiting for verify+opt, pid=721
+--- would reduce privs here
+--- END 'HelloDex.zip' (success) ---
+当前目录会有HelloDex.odex文件。现在将其导出方便以后操作。
+
+adb pull /data/local/HelloDex.odex d:\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
